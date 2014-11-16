@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
   <Say>Hello, and welcome to Launch Pad Lab.</Say>
-  <play>9.wav</play>
+  <play>/9.wav</play>
 </Response>
