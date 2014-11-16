@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<RESPONSE>
-    <SAY>GREETINGS, I AM A CYBORG THAT BEN HAS EMPLOYED TO BUZZ FRIENDS INTO THE NEIGHBORHOOD.  PLEASE WAIT FOR THE GATE TO OPEN.</SAY>
+<Response>
+    <Say>Hell, and welcome to Launch Pad Lab.</Say>
     <!-- <PLAY>9.WAV</PLAY> -->
-</RESPONSE>
+</Response>
