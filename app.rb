@@ -5,6 +5,6 @@ Bundler.require
 
 
 get '/' do
-"Hello World!"
+  "Hello World!"
 end
 
