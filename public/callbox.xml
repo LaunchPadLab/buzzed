@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Response>
   <Say>Hello, and welcome to Launch Pad Lab.</Say>
-  <Play digits="wwww9"></Play>
+  <Number sendDigits="www9">
 </Response>
