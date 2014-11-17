@@ -3,6 +3,7 @@ GEM
   specs:
     daemons (1.1.9)
     eventmachine (1.0.3)
+    newrelic_rpm (3.9.6.257)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
@@ -20,5 +21,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  newrelic_rpm
   sinatra
   thin
