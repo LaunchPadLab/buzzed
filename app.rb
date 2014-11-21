@@ -19,7 +19,7 @@ def send_to_hipchat
   client = HipChat::Client.new(ENV['HIPCHAT_TOKEN'], :api_version => 'v2')
   room = 'LaunchPad Lab'
   username = 'scottweisman'
-  buzzed_url = 'https://huron-door.herokuapp.com/buzzed'
+  buzzed_url = 'https://buzzed-app.herokuapp.com/buzzed'
   client[room].send(username, "Someone is at the front door! <a href=#{buzzed_url}>Let 'em in!</a>", color: 'green', message_format: 'html')
 end
 
@@ -36,7 +36,7 @@ get '/buzzed' do
   calls = client.account.calls.list({ :status => 'in-progress' })
   if calls.any?
     current_call = client.account.calls.get(calls.first.sid)
-    current_call.update(:url => "https://huron-door.herokuapp.com/buzz.xml", :method => "GET")
+    current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
     "BUZZED!"
   else
     "Something went wrong. Get off your butt and let them in."
