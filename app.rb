@@ -11,7 +11,7 @@ Dotenv.load
 Bundler.require
 
 get '/' do
-  send_to_hipchat
+  # send_to_hipchat
   redirect to('/say-hello')
 end
 
@@ -28,6 +28,7 @@ get '/say-hello' do
   Twilio::TwiML::Response.new do |r|
     r.Say 'Hello, and welcome to Launch Pad Lab.', voice: 'alice'
   end.text
+
 end
 
 get '/buzzed' do
