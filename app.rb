@@ -27,14 +27,8 @@ get '/say-hello' do
   content_type 'text/xml'
   Twilio::TwiML::Response.new do |r|
     r.Say 'Hello, and welcome to Launch Pad Lab.'
-    r.Play 'http://com.twilio.sounds.music.s3.amazonaws.com/MARKOVICHAMP-Borghestral.mp3'
+    r.Play '/such_great_heights.mp3'
   end.text
-end
-
-get '/wait-music' do
-  Twilio::TwiML::Response.new do |r|
-    r.play 'http://com.twilio.sounds.music.s3.amazonaws.com/MARKOVICHAMP-Borghestral.mp3'
-  end
 end
 
 get '/buzzed' do
