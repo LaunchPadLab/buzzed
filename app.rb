@@ -27,7 +27,7 @@ get '/say-hello' do
   content_type 'text/xml'
   Twilio::TwiML::Response.new do |r|
     r.Say 'Hello, and welcome to Launch Pad Lab.'
-    r.Enqueue waitUrl: "/wait-music"
+    r.play 'http://com.twilio.sounds.music.s3.amazonaws.com/MARKOVICHAMP-Borghestral.mp3'
   end.text
 end
 
@@ -39,7 +39,7 @@ end
 
 get '/buzzed' do
   client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
-  calls = client.account.calls.list({:status => 'queued' })
+  calls = client.account.calls.list({:status => 'in-progress' })
   if calls.any?
     current_call = client.account.calls.get(calls.first.sid)
     current_call.update(:url => "http://demo.twilio.com/docs/buzz.xml", :method => "GET")
