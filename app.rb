@@ -33,7 +33,13 @@ end
 
 get '/buzzed' do
   client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
-  call = client.account.calls.list({:status => 'queued' }).first.sid
-  call.update(:url => "http://demo.twilio.com/docs/buzz.xml", :method => "GET")
+  call = client.account.calls.list({:status => 'queued' })
+  if call.any?
+    current_call = call.first.sid
+    current_call.update(:url => "http://demo.twilio.com/docs/buzz.xml", :method => "GET")
+    "BUZZED!"
+  else
+    "Something went wrong. Get off your ass and let them in."
+  end
 end
 
