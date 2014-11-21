@@ -17,7 +17,7 @@ end
 
 def send_to_hipchat
   client = HipChat::Client.new(ENV['HIPCHAT_TOKEN'], :api_version => 'v2')
-  room = 'LaunchPad Lab'
+  room = 'Huron Doors'
   username = 'scottweisman'
   buzzed_url = 'https://buzzed-app.herokuapp.com/buzzed'
   client[room].send(username, "Someone is at the front door! <a href=#{buzzed_url}>Let 'em in!</a>", color: 'green', message_format: 'html')
