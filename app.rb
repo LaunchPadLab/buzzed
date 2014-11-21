@@ -43,3 +43,6 @@ get '/buzzed' do
   end
 end
 
+get '/stay-awake' do
+  "Wake Up!"
+end
