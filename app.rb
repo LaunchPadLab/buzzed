@@ -11,7 +11,7 @@ Dotenv.load
 Bundler.require
 
 get '/' do
-  send_to_hipchat
+  # send_to_hipchat
   redirect to('/say-hello')
 end
 
