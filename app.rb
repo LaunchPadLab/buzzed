@@ -28,12 +28,11 @@ get '/say-hello' do
   Twilio::TwiML::Response.new do |r|
     r.Say 'Hello, and welcome to Launch Pad Lab.', voice: 'alice'
     r.Enqueue
-    end
   end.text
 end
 
 get '/buzzed' do
-  client = Twilio::REST::Client.new ENV['TWILIO_TOKEN'], ENV['TWILIO_TOKEN']
+  client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
   call = client.account.calls.list({:status => 'queued' }).first.sid
   call.update(:url => "http://demo.twilio.com/docs/buzz.xml", :method => "GET")
 end
