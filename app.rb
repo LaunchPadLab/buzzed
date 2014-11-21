@@ -42,7 +42,7 @@ get '/buzzed' do
   calls = client.account.calls.list({:status => 'in-progress' })
   if calls.any?
     current_call = client.account.calls.get(calls.first.sid)
-    current_call.update(:url => "http://demo.twilio.com/docs/buzz.xml", :method => "GET")
+    current_call.update(:url => "https://huron-door.herokuapp.com/buzz.xml", :method => "GET")
     "BUZZED!"
   else
     "Something went wrong. Get off your ass and let them in."
