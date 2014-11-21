@@ -26,7 +26,7 @@ end
 get '/say-hello' do
   content_type 'text/xml'
   Twilio::TwiML::Response.new do |r|
-    r.Say 'Hello, and welcome to Launch Pad Lab.', voice: 'woman'
+    r.Say 'Hello, and welcome to Launch Pad Lab.'
     r.Play '/such_great_heights.mp3'
   end.text
 end
