@@ -15,6 +15,7 @@ get '/' do
   response = Twilio::TwiML::Response.new do |r|
     r.Say 'Hello, and welcome to Launch Pad Lab.', voice: 'alice'
   end
+  puts response.text
 
   # client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
   # call_sid = client.account.calls.list({:status => 'in-progress' }).first.sid
@@ -34,6 +35,7 @@ get '/buzzed' do
   response = Twilio::TwiML::Response.new do |r|
     r.Play digits: "www6"
   end
+  puts response.text
 
 end
 
