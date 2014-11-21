@@ -11,7 +11,7 @@ Dotenv.load
 Bundler.require
 
 get '/' do
-  # send_to_hipchat
+  send_to_hipchat
   redirect to('/say-hello')
 end
 
@@ -27,17 +27,14 @@ get '/say-hello' do
   content_type 'text/xml'
   Twilio::TwiML::Response.new do |r|
     r.Say 'Hello, and welcome to Launch Pad Lab.', voice: 'alice'
+    r.Enqueue
+    end
   end.text
-
 end
 
 get '/buzzed' do
-  content_type 'text/xml'
-  # @call = @client.account.calls.get("CAe1644a7eed5088b159577c5802d8be38")
-  # @call.update(:url => "http://demo.twilio.com/docs/voice.xml",
-  #     :method => "POST")
-  response = Twilio::TwiML::Response.new do |r|
-    r.Play digits: "www6"
-  end.text
+  client = Twilio::REST::Client.new ENV['TWILIO_TOKEN'], ENV['TWILIO_TOKEN']
+  call = client.account.calls.list({:status => 'queued' }).first.sid
+  call.update(:url => "http://demo.twilio.com/docs/buzz.xml", :method => "GET")
 end
 
