@@ -39,6 +39,9 @@ get '/buzzed' do
     current_call = client.account.calls.get(calls.first.sid)
     current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
     "BUZZED!"
+    client = HipChat::Client.new(ENV['HIPCHAT_TOKEN'], :api_version => 'v2')
+    username = 'scottweisman'
+    client[room].send(username, "Visitor has been buzzed in!", color: 'green', message_format: 'html')
   else
     "Something went wrong. Get off your butt and let them in."
   end
