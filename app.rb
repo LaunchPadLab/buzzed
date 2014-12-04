@@ -20,7 +20,8 @@ def send_to_hipchat
   room = 'LaunchPad Lab'
   username = 'scottweisman'
   buzzed_url = 'https://buzzed-app.herokuapp.com/buzzed'
-  client[room].send(username, "Someone is at the front door! <a href=#{buzzed_url}>Let 'em in!</a>", color: 'green', message_format: 'html')
+  client[room].send(username, "@all Someone is at the front door!", color: 'green', notify: true, message_format: 'text')
+  client[room].send(username, "<a href=#{buzzed_url}>Let 'em in!</a>", color: 'green', message_format: 'html')
 end
 
 get '/say-hello' do
