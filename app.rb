@@ -4,24 +4,31 @@ require "sinatra"
 require "sinatra/reloader" if development?
 require 'dotenv'
 require 'twilio-ruby'
-require 'http'
+require 'slackbotsy'
+require 'open-uri'
 
 Dotenv.load
 
 Bundler.require
 
-get '/' do
-  send_to_hipchat
-  redirect to('/say-hello')
+config = {
+  'channel'          => '#launchpad-lab',
+  'name'             => 'buzzer',
+  'incoming_webhook' => ENV['INCOMING_WEBHOOK'],
+  'outgoing_token'   => ENV['OUTGOING_TOKEN']
+}
+
+bot = Slackbotsy::Bot.new(config) do
+
+  hear /.open/i do
+    "Buzzed!"
+  end
+
 end
 
-def send_to_hipchat
-  client = HipChat::Client.new(ENV['HIPCHAT_TOKEN'], :api_version => 'v2')
-  room = 'LaunchPad Lab'
-  username = 'scottweisman'
-  buzzed_url = 'https://buzzed-app.herokuapp.com/buzzed'
-  client[room].send(username, "@all Someone is at the front door!", color: 'green', notify: true, message_format: 'text')
-  client[room].send(username, "<a href=#{buzzed_url}>Let 'em in!</a>", color: 'green', message_format: 'html')
+post '/' do
+  bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':satellite:', text: "Someone is at the front door.\nType *.open* to let them in.")
+  redirect to('/say-hello')
 end
 
 get '/say-hello' do
@@ -32,18 +39,16 @@ get '/say-hello' do
   end.text
 end
 
-get '/buzzed' do
+post '/open' do
+  bot.handle_item(params)
+end
+
+post '/buzz-door' do
   client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
   calls = client.account.calls.list({ :status => 'in-progress' })
   if calls.any?
     current_call = client.account.calls.get(calls.first.sid)
     current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
-    "BUZZED!"
-    client = HipChat::Client.new(ENV['HIPCHAT_TOKEN'], :api_version => 'v2')
-    username = 'scottweisman'
-    client[room].send(username, "Visitor has been buzzed in!", color: 'green', message_format: 'html')
-  else
-    "Something went wrong. Get off your butt and let them in."
   end
 end
 
