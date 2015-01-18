@@ -12,3 +12,16 @@
 [12/04/14 11:53:25 -0600 Scotts-MacBook-Air.local (29730)] INFO : Installing Rack::Builder middleware instrumentation
 [12/04/14 11:53:25 -0600 Scotts-MacBook-Air.local (29730)] INFO : Finished instrumentation
 [12/04/14 11:53:25 -0600 Scotts-MacBook-Air.local (29730)] INFO : Doing deferred dependency-detection before Rack startup
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Starting the New Relic agent in "development" environment.
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Reading configuration from config/newrelic.yml (/Users/Scott/rails_projects/buzzed)
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Environment: development
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : No known dispatcher detected.
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Application: My Application (Development)
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] WARN : Agent configured not to send data in this environment.
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Installing Net instrumentation
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Installing Sinatra instrumentation
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Installing deferred Rack instrumentation
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Installing Rack::Builder middleware instrumentation
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Finished instrumentation
+[01/17/15 17:44:10 -0600 Scotts-MacBook-Air.local (16071)] INFO : Doing deferred dependency-detection before Rack startup

@@ -4,7 +4,7 @@ require "sinatra"
 require "sinatra/reloader" if development?
 require 'dotenv'
 require 'twilio-ruby'
-require 'hipchat'
+require 'http'
 
 Dotenv.load
 

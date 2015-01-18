@@ -8,8 +8,6 @@ GEM
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
     eventmachine (1.0.3)
-    hipchat (1.4.0)
-      httparty
     httparty (0.13.3)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
@@ -49,7 +47,7 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
-  hipchat
+  httparty
   newrelic_rpm
   sinatra
   sinatra-contrib
