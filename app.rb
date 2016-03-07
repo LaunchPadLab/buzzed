@@ -28,7 +28,7 @@ bot = Slackbotsy::Bot.new(config) do
   end
 
   hear /.stayopen/i do
-    "The door will automatically buzz up for an hour"
+    "The door will automatically buzz in for an hour"
   end
 
 end
