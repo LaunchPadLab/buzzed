@@ -4,4 +4,5 @@
 
 Run the server
 
+    rackup
     

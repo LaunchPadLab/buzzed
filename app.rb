@@ -24,11 +24,19 @@ bot = Slackbotsy::Bot.new(config) do
     "Buzzed!"
   end
 
+  hear /.stayopen/i do
+    "The door will automatically buzz up for an hour"
+  end
+
 end
 
 post '/' do
-  bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':satellite:', text: "Someone is at the front door.\nType *.open* to let them in.")
-  redirect to('/say-hello')
+  if Time.now < cookies[:expire_time]
+    redirect to('/buzz-door')
+  else
+    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':satellite:', text: "Someone is at the front door.\nType *.open* to let them in.")
+    redirect to('/say-hello')
+  end
 end
 
 get '/say-hello' do
@@ -50,6 +58,11 @@ post '/buzz-door' do
     current_call = client.account.calls.get(calls.first.sid)
     current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
   end
+end
+
+get '/stay-open' do
+  expire_time = Time.now + 3600  # 1 hour
+  cookies[:expire_time] = expire_time
 end
 
 get '/stay-awake' do
