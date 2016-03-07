@@ -6,6 +6,7 @@ require 'dotenv'
 require 'twilio-ruby'
 require 'slackbotsy'
 require 'open-uri'
+require "redis"
 
 Dotenv.load
 
@@ -17,6 +18,8 @@ config = {
   'incoming_webhook' => ENV['INCOMING_WEBHOOK'],
   'outgoing_token'   => ENV['OUTGOING_TOKEN']
 }
+
+redis = Redis.new(:url => ENV['REDIS_URL'])
 
 bot = Slackbotsy::Bot.new(config) do
 
@@ -31,7 +34,7 @@ bot = Slackbotsy::Bot.new(config) do
 end
 
 post '/' do
-  if Time.now < cookies[:expire_time]
+  if redis.get("door_open")
     redirect to('/buzz-door')
   else
     bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':satellite:', text: "Someone is at the front door.\nType *.open* to let them in.")
@@ -61,8 +64,8 @@ post '/buzz-door' do
 end
 
 get '/stay-open' do
-  expire_time = Time.now + 3600  # 1 hour
-  cookies[:expire_time] = expire_time
+  redis.set("door_open", "auto")
+  redis.expire("door_open", 3600)
 end
 
 get '/stay-awake' do
