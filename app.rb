@@ -28,9 +28,10 @@ bot = Slackbotsy::Bot.new(config) do
   end
 
   hear /.stayopen/i do
-    redis.set("door_open", "auto")
-    redis.expire("door_open", 3600)
-    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "The door will automatically buzz in for an hour.")
+    "The door will automatically buzz in for an hour."
+    # redis.set("door_open", "auto")
+    # redis.expire("door_open", 3600)
+    # bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "The door will automatically buzz in for an hour.")
   end
 
 end
