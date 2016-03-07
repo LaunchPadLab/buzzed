@@ -28,16 +28,19 @@ bot = Slackbotsy::Bot.new(config) do
   end
 
   hear /.stayopen/i do
-    "The door will automatically buzz in for an hour"
+    redis.set("door_open", "auto")
+    redis.expire("door_open", 3600)
+    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "The door will automatically buzz in for an hour.")
   end
 
 end
 
 post '/' do
   if redis.get("door_open")
+    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
     redirect to('/buzz-door')
   else
-    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':satellite:', text: "Someone is at the front door.\nType *.open* to let them in.")
+    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
     redirect to('/say-hello')
   end
 end
@@ -61,11 +64,6 @@ post '/buzz-door' do
     current_call = client.account.calls.get(calls.first.sid)
     current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
   end
-end
-
-get '/stay-open' do
-  redis.set("door_open", "auto")
-  redis.expire("door_open", 3600)
 end
 
 get '/stay-awake' do
