@@ -1,10 +1,11 @@
 # Buzzed
 
-https://buzzed-app.herokuapp.com
-
 ## Sinatra 
 
-Run the server
+Run the server locally
 
     rackup
-    
+
+Redis
+
+    heroku redis:cli

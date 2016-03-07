@@ -23,11 +23,13 @@ redis = Redis.new(:url => ENV['REDIS_URL'])
 
 bot = Slackbotsy::Bot.new(config) do
 
-  hear /.open/i do
+  hear /^.open$/i do
     "Buzzed!"
   end
 
-  hear /.stayopen/i do
+  hear /^.stayopen$/i do
+    redis.set("door_open", "auto")
+    redis.expire("door_open", 3600)
     "The door will automatically buzz in for an hour."
   end
 
@@ -62,11 +64,6 @@ post '/buzz-door' do
     current_call = client.account.calls.get(calls.first.sid)
     current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
   end
-end
-
-get '/stay-open' do
-  redis.set("door_open", "auto")
-  redis.expire("door_open", 3600)
 end
 
 get '/stay-awake' do
