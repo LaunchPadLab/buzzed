@@ -24,24 +24,30 @@ redis = Redis.new(:url => ENV['REDIS_URL'])
 bot = Slackbotsy::Bot.new(config) do
 
   hear /^.open$/i do
+    redis.set("door_status", "open")
+    redis.expire("door_status", 30)
     "Buzzed!"
   end
 
   hear /^.stayopen$/i do
-    redis.set("door_open", "auto")
-    redis.expire("door_open", 3600)
+    redis.set("door_status", "auto")
+    redis.expire("door_status", 3600)
     "The door will automatically buzz in for an hour."
   end
 
   hear /^.close$/i do
-    redis.expire("door_open", 1)
-    "The door has been closed and will not automatically buzz in"
+    redis.expire("door_status", 0)
+    "The door has been closed and will not automatically buzz in."
   end
 
 end
 
+def door_status
+  redis.get("door_status")
+end
+
 post '/' do
-  if redis.get("door_open")
+  if door_status == "auto"
     bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
     redirect to('/buzz-door')
   else
@@ -58,8 +64,12 @@ get '/say-hello' do
   end.text
 end
 
-post '/open' do
+post '/door-status' do
   bot.handle_item(params)
+end
+
+get '/open' do
+  redirect to('/buzz-door') if door_status == "open"
 end
 
 post '/buzz-door' do
