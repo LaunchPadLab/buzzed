@@ -68,7 +68,7 @@ post '/door-status' do
   bot.handle_item(params)
 end
 
-get '/open' do
+post '/open' do
   redirect to('/buzz-door') if door_status == "open"
 end
 
