@@ -44,13 +44,13 @@ end
 
 
 post '/' do
-  if redis.get("door_status") == "auto"
-    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
-    redirect to('/buzz-door')
-  else
+  # if redis.get("door_status") == "auto"
+  #   bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
+  #   redirect to('/buzz-door')
+  # else
     bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
     redirect to('/say-hello')
-  end
+  # end
 end
 
 get '/say-hello' do
