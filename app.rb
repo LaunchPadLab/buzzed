@@ -42,9 +42,6 @@ bot = Slackbotsy::Bot.new(config) do
 
 end
 
-def door_status
-  redis.get("door_status")
-end
 
 post '/' do
   # if door_status == "auto"
@@ -68,16 +65,18 @@ post '/door-status' do
   bot.handle_item(params)
 end
 
-post '/open' do
-  redirect to('/buzz-door') if door_status == "open"
-end
+# post '/open' do
+#   redirect to('/buzz-door')
+# end
 
 post '/buzz-door' do
-  client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
-  calls = client.account.calls.list({ :status => 'in-progress' })
-  if calls.any?
-    current_call = client.account.calls.get(calls.first.sid)
-    current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
+  if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
+    client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
+    calls = client.account.calls.list({ :status => 'in-progress' })
+    if calls.any?
+      current_call = client.account.calls.get(calls.first.sid)
+      current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
+    end
   end
 end
 
