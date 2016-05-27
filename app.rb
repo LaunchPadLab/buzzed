@@ -46,7 +46,7 @@ end
 post '/' do
   # if redis.get("door_status") == "auto"
     bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
-    redirect to('/buzz-door')
+    redirect to('/door_status')
   # # else
   #   bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
   #   redirect to('/say-hello')
@@ -69,6 +69,7 @@ end
 
 post '/door-status' do
   bot.handle_item(params)
+  redirect to('/buzz-door')
 end
 
 post '/buzz-door' do
