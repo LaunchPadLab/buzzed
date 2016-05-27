@@ -44,18 +44,12 @@ end
 
 
 post '/' do
-content_type 'text/xml'
-  Twilio::TwiML::Response.new do |r|
-    r.Say 'Hello, and welcome to Launch Pad Lab.'
-    r.Play '/such_great_heights.mp3'
-  end.text
-
   # if redis.get("door_status") == "auto"
   #   bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
   #   redirect to('/buzz-door')
   # else
-  #   bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
-  #   redirect to('/say-hello')
+    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
+    redirect to('/say-hello')
   # end
 end
 
