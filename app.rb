@@ -44,9 +44,16 @@ end
 
 
 post '/' do
+    client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
+    calls = client.account.calls.list({ :status => 'in-progress' })
+    if calls.any?
+      current_call = client.account.calls.get(calls.first.sid)
+      current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
+    end
+
   # if redis.get("door_status") == "auto"
     # bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
-    redirect to('/buzz_door')
+    # redirect to('/buzz_door')
   # # else
   #   bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
   #   redirect to('/say-hello')
