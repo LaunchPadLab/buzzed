@@ -44,13 +44,13 @@ end
 
 
 post '/' do
-  if redis.get("door_status") == "auto"
+  # if redis.get("door_status") == "auto"
     bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
     redirect to('/buzz-door')
-  else
-    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
-    redirect to('/say-hello')
-  end
+  # # else
+  #   bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
+  #   redirect to('/say-hello')
+  # # end
 end
 
 get '/say-hello' do
@@ -59,6 +59,12 @@ get '/say-hello' do
     r.Say 'Hello, and welcome to Launch Pad Lab.'
     r.Play '/such_great_heights.mp3'
   end.text
+
+  if redis.get("door_status") == "auto"
+    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
+    redirect to('/buzz-door')
+  else
+
 end
 
 post '/door-status' do
@@ -66,14 +72,14 @@ post '/door-status' do
 end
 
 post '/buzz-door' do
-  if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
+  # if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
     client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
     calls = client.account.calls.list({ :status => 'in-progress' })
     if calls.any?
       current_call = client.account.calls.get(calls.first.sid)
       current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
     end
-  end
+  # end
 end
 
 get '/stay-awake' do
