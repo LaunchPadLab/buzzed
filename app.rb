@@ -21,24 +21,6 @@ config = {
 
 redis = Redis.new(:url => ENV['REDIS_URL'])
 
-def buzz_door
-  redis = Redis.new(:url => ENV['REDIS_URL'])
-
-  if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
-    content_type 'text/xml'
-    Twilio::TwiML::Response.new do |r|
-      r.Say 'Hello, and welcome to Launch Pad Lab.'
-    end.text
-
-    client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
-    calls = client.account.calls.list({ :status => 'in-progress' })
-    if calls.any?
-      current_call = client.account.calls.get(calls.first.sid)
-      current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
-    end
-  end
-end
-
 bot = Slackbotsy::Bot.new(config) do
 
   hear /^.open$/i do
@@ -83,11 +65,35 @@ post '/door-status' do
 end
 
 get '/buzz-door' do
-  buzz_door
+  if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
+    content_type 'text/xml'
+    Twilio::TwiML::Response.new do |r|
+      r.Say 'Hello, and welcome to Launch Pad Lab.'
+    end.text
+
+    client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
+    calls = client.account.calls.list({ :status => 'in-progress' })
+    if calls.any?
+      current_call = client.account.calls.get(calls.first.sid)
+      current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
+    end
+  end
 end
 
 post '/buzz-door' do
-  buzz_door
+  if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
+    content_type 'text/xml'
+    Twilio::TwiML::Response.new do |r|
+      r.Say 'Hello, and welcome to Launch Pad Lab.'
+    end.text
+
+    client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
+    calls = client.account.calls.list({ :status => 'in-progress' })
+    if calls.any?
+      current_call = client.account.calls.get(calls.first.sid)
+      current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
+    end
+  end
 end
 
 get '/stay-awake' do
