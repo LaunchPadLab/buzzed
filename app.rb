@@ -22,6 +22,8 @@ config = {
 redis = Redis.new(:url => ENV['REDIS_URL'])
 
 def buzz_door
+  redis = Redis.new(:url => ENV['REDIS_URL'])
+
   if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
     client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
     calls = client.account.calls.list({ :status => 'in-progress' })
