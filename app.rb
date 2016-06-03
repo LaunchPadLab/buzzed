@@ -45,7 +45,11 @@ end
 post '/' do
   if redis.get("door_status") == "auto"
     bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
-    redirect to('/buzz-door')
+    content_type 'text/xml'
+    Twilio::TwiML::Response.new do |r|
+      r.Say 'Hello, and welcome to Launch Pad Lab.'
+      r.Play digits: 'wwww6'
+    end.text
   else
     bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
     redirect to('/say-hello')
@@ -64,35 +68,12 @@ post '/door-status' do
   bot.handle_item(params)
 end
 
-get '/buzz-door' do
-  if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
-    content_type 'text/xml'
-    Twilio::TwiML::Response.new do |r|
-      r.Say 'Hello, and welcome to Launch Pad Lab.'
-    end.text
-
-    client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
-    calls = client.account.calls.list({ :status => 'in-progress' })
-    if calls.any?
-      current_call = client.account.calls.get(calls.first.sid)
-      current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
-    end
-  end
-end
-
 post '/buzz-door' do
-  if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
-    content_type 'text/xml'
-    Twilio::TwiML::Response.new do |r|
-      r.Say 'Hello, and welcome to Launch Pad Lab.'
-    end.text
-
-    client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
-    calls = client.account.calls.list({ :status => 'in-progress' })
-    if calls.any?
-      current_call = client.account.calls.get(calls.first.sid)
-      current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
-    end
+  client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
+  calls = client.account.calls.list({ :status => 'in-progress' })
+  if calls.any?
+    current_call = client.account.calls.get(calls.first.sid)
+    current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
   end
 end
 
