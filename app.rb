@@ -21,6 +21,17 @@ config = {
 
 redis = Redis.new(:url => ENV['REDIS_URL'])
 
+def buzz_door
+  if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
+    client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
+    calls = client.account.calls.list({ :status => 'in-progress' })
+    if calls.any?
+      current_call = client.account.calls.get(calls.first.sid)
+      current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
+    end
+  end
+end
+
 bot = Slackbotsy::Bot.new(config) do
 
   hear /^.open$/i do
@@ -41,7 +52,6 @@ bot = Slackbotsy::Bot.new(config) do
   end
 
 end
-
 
 post '/' do
   if redis.get("door_status") == "auto"
@@ -65,15 +75,12 @@ post '/door-status' do
   bot.handle_item(params)
 end
 
+get '/buzz-door' do
+  buzz_door
+end
+
 post '/buzz-door' do
-  if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
-    client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
-    calls = client.account.calls.list({ :status => 'in-progress' })
-    if calls.any?
-      current_call = client.account.calls.get(calls.first.sid)
-      current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
-    end
-  end
+  buzz_door
 end
 
 get '/stay-awake' do
