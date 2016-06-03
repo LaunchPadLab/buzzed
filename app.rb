@@ -25,6 +25,11 @@ def buzz_door
   redis = Redis.new(:url => ENV['REDIS_URL'])
 
   if redis.get("door_status") == "open" || redis.get("door_status") == "auto"
+    content_type 'text/xml'
+    Twilio::TwiML::Response.new do |r|
+      r.Say 'Hello, and welcome to Launch Pad Lab.'
+    end.text
+
     client = Twilio::REST::Client.new ENV['TWILIO_SID'], ENV['TWILIO_TOKEN']
     calls = client.account.calls.list({ :status => 'in-progress' })
     if calls.any?
