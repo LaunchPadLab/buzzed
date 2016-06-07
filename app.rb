@@ -59,7 +59,7 @@ end
 get '/say-hello' do
   content_type 'text/xml'
   Twilio::TwiML::Response.new do |r|
-    r.Say 'Hello, and welcome to Launch Pad Lab.'
+    r.Say 'Hello, and welcome to Launch Pad Lab connect night.'
     r.Play '/such_great_heights.mp3'
   end.text
 end
