@@ -42,8 +42,19 @@ bot = Slackbotsy::Bot.new(config) do
 
 end
 
+class Time
+  def is_weekday?
+    [1,2,3,4,5].include?(wday)
+  end
+
+  def office_open?
+    time = Time.now
+    time.is_weekday? && time.hour >= 9 && time.hour <= 17
+  end
+end
+
 post '/' do
-  if redis.get("door_status") == "auto"
+  if office_open? || redis.get("door_status") == "auto"
     bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
     content_type 'text/xml'
     Twilio::TwiML::Response.new do |r|
@@ -75,6 +86,10 @@ post '/buzz-door' do
     current_call = client.account.calls.get(calls.first.sid)
     current_call.update(:url => "https://buzzed-app.herokuapp.com/buzz.xml", :method => "GET")
   end
+end
+
+get '/time' do
+  erb "<%= Time.now %> - " "office open: <%= Time.now.office_open? %>"
 end
 
 get '/stay-awake' do
