@@ -46,7 +46,9 @@ class Time
   def is_weekday?
     [1,2,3,4,5].include?(wday)
   end
+end
 
+class Office
   def office_open?
     time = Time.now
     time.is_weekday? && time.hour >= 9 && time.hour <= 17
