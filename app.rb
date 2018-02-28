@@ -88,14 +88,6 @@ post '/buzz-door' do
   end
 end
 
-get '/time' do
-  def office_open?
-    time = Time.now
-    time.is_weekday? && time.hour >= 9 && time.hour <= 17
-  end
-  erb "<%= Time.now %> - " "office open: <%= office_open? %>"
-end
-
 get '/stay-awake' do
   "Wake Up!"
 end
