@@ -46,14 +46,14 @@ class Time
   def is_weekday?
     [1,2,3,4,5].include?(wday)
   end
+end
 
+post '/' do
   def office_open?
     time = Time.now
     time.is_weekday? && time.hour >= 9 && time.hour <= 17
   end
-end
 
-post '/' do
   if office_open? || redis.get("door_status") == "auto"
     bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
     content_type 'text/xml'
@@ -89,7 +89,11 @@ post '/buzz-door' do
 end
 
 get '/time' do
-  erb "<%= Time.now %> - " "office open: <%= Time.now.office_open? %>"
+  def office_open?
+    time = Time.now
+    time.is_weekday? && time.hour >= 9 && time.hour <= 17
+  end
+  erb "<%= Time.now %> - " "office open: <%= office_open? %>"
 end
 
 get '/stay-awake' do
