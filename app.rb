@@ -55,7 +55,7 @@ post '/' do
   end
 
   if office_open? || redis.get("door_status") == "auto"
-    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
+    # bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
     content_type 'text/xml'
     Twilio::TwiML::Response.new do |r|
       r.Say 'Hello, and welcome to Launch Pad Lab.'
