@@ -62,8 +62,8 @@ post '/' do
   #     r.Play digits: 'wwww6'
   #   end.text
   # else
-    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
-    redirect to('/say-hello')
+  bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
+  redirect to('/say-hello')
   # end
 end
 
