@@ -31,8 +31,8 @@ bot = Slackbotsy::Bot.new(config) do
 
   hear /^.stayopen$/i do
     redis.set("door_status", "auto")
-    redis.expire("door_status", 3600)
-    "The door will automatically buzz in for an hour."
+    redis.expire("door_status", 300)
+    "The door will automatically buzz in for 5 minutes."
   end
 
   hear /^.close$/i do
@@ -50,21 +50,22 @@ end
 
 post '/' do
   def office_open?
-    time = Time.now
-    time.is_weekday? && time.hour >= 9 && time.hour <= 17
+    # time = Time.now
+    # time.is_weekday? && time.hour >= 9 && time.hour <= 17
+    return false
   end
 
-  # if office_open? || redis.get("door_status") == "auto"
-  #   bot.post(channel: '#office-buzzer', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
-  #   content_type 'text/xml'
-  #   Twilio::TwiML::Response.new do |r|
-  #     r.Say 'Hello, and welcome to Launch Pad Lab.'
-  #     r.Play digits: 'wwww6'
-  #   end.text
-  # else
-  bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
-  redirect to('/say-hello')
-  # end
+  if office_open? || redis.get("door_status") == "auto"
+    bot.post(channel: '#office-buzzer', username: 'buzzer', icon_emoji: ':door:', text: "Someone has been buzzed in.")
+    content_type 'text/xml'
+    Twilio::TwiML::Response.new do |r|
+      r.Say 'Hello, and welcome to Launch Pad Lab.'
+      r.Play digits: 'wwww6'
+    end.text
+  else
+    bot.post(channel: '#launchpad-lab', username: 'buzzer', icon_emoji: ':door:', text: "Someone is at the front door.\nType *.open* to let them in.")
+    redirect to('/say-hello')
+  end
 end
 
 get '/say-hello' do
