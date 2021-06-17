@@ -13,7 +13,7 @@ Dotenv.load
 Bundler.require
 
 config = {
-  'channel'          => '#launchpad-lab',
+  'channel'          => '#the_office',
   'name'             => 'buzzer',
   'incoming_webhook' => ENV['INCOMING_WEBHOOK'],
   'outgoing_token'   => ENV['OUTGOING_TOKEN']
