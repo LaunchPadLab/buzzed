@@ -32,7 +32,7 @@ bot = Slackbotsy::Bot.new(config) do
   hear /^.stayopen$/i do
     redis.set("door_status", "auto")
     redis.expire("door_status", 3600)
-    "The door will automatically buzz in for 5 minutes."
+    "The door will automatically buzz in for 1 hour. Type .close to close the door."
   end
 
   hear /^.close$/i do
